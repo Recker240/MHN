@@ -123,7 +123,7 @@ def Adjac_file_man(N, E, m, h, mode):
     Returns:
         Nxmax_k float64: Matriz de vizinhos.
     """
-    folder_adress = f"MHN/Data/Networks/N={N}/m={m}_h={h}"
+    folder_adress = f"Data/Networks/N={N}/m={m}_h={h}"
     
     folder_existance_check(folder_adress)
     
@@ -141,7 +141,7 @@ def Adjac_file_man(N, E, m, h, mode):
             adresses_that_fit.append(folder_adress + "/" + arq)
     
     iter = len(adresses_that_fit) + 1
-    common_adress = f"MHN/Data/Networks/N={N}/m={m}_h={h}/"
+    common_adress = f"Data/Networks/N={N}/m={m}_h={h}/"
     folder_existance_check(common_adress)
         
     if mode[0] == "w":
