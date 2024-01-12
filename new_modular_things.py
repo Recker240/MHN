@@ -375,7 +375,6 @@ available_mh = os.listdir("Data/modular_dynamic/"+selected_N+"/"+selected_K+"/")
 with cols[2]:
     selected_mh = st.selectbox("Padrão hierárquico", available_mh)
 
-st.write(f"Nesse caso, há módulos de tamanhos {[N/(m**(h-k)) for k in range(h)]}.")
 folder_adress = "Data/modular_dynamic/"+selected_N+"/"+selected_K+"/"+selected_mh
 net = os.listdir(folder_adress)[0][2]
 
@@ -383,6 +382,7 @@ N = int(selected_N[2:])
 E = int(selected_K[2:])*N
 m, h = mh_finder(selected_mh)
 
+st.write(f"Nesse caso, há módulos de tamanhos {[N/(m**(h-k)) for k in range(h)]}.")
 # Globals
 wni, qni = N, N//10
 systems, states = 30, 5
