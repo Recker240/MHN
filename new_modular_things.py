@@ -365,10 +365,10 @@ def mh_finder(selected_mh):
 st.set_page_config(layout="wide")
 st.write("Selecione os parâmetros desejados da rede:")
 cols = st.columns(3)
-available_Ns = os.listdir("Data/modular_dynamic/")
+available_Ns = sorted(os.listdir("Data/modular_dynamic/"))
 with cols[0]:
     selected_N = st.selectbox("Número de nós", available_Ns)
-available_Ks = os.listdir("Data/modular_dynamic/"+selected_N+"/")
+available_Ks = sorted(os.listdir("Data/modular_dynamic/"+selected_N+"/"))
 with cols[1]:
     selected_K = st.selectbox("Grau médio", available_Ks)
 available_mh = os.listdir("Data/modular_dynamic/"+selected_N+"/"+selected_K+"/")
