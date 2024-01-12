@@ -6,3 +6,4 @@ pandas
 plotly
 streamlit
 scipy
+networkx
