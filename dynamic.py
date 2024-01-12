@@ -66,25 +66,25 @@ def theoretical_dynamic(y, x, F_max, F_0, K, lamb, n):
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
 
 def file_opener_dyn(N,E,m,h,p,r0,rf,len_r,T,net):
-    folder_adress = f"IC/MHN/Data/dynamic/N={N}"
+    folder_adress = f"MHN/Data/dynamic/N={N}"
     
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"N={N}"
-        parent_dir = f"IC/MHN/Data/dynamic"
+        parent_dir = f"MHN/Data/dynamic"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
     
     folder_adress += f"/K={E//N}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"K={E//N}"
-        parent_dir = f"IC/MHN/Data/dynamic/N={N}"
+        parent_dir = f"MHN/Data/dynamic/N={N}"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
     
     folder_adress += f"/m={m}_h={h}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"m={m}_h={h}"
-        parent_dir = f"IC/MHN/Data/dynamic/N={N}/K={E//N}"
+        parent_dir = f"MHN/Data/dynamic/N={N}/K={E//N}"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
 
@@ -143,15 +143,15 @@ def resposta_files(adress, P, E, m, h, net, p, r0, rf, len_r, T, wni, qni):
                 file.seek(0)
                 file.write(f"rs_generated = {total_rs}\n")
                 file.close()
-                os.replace(adress, f"IC/MHN/Data/dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{r},{len_r}).txt") # Atualiza a quantidade de sistemas no nome
+                os.replace(adress, f"MHN/Data/dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{r},{len_r}).txt") # Atualiza a quantidade de sistemas no nome
                 raise KeyboardInterrupt
         file.close()
         file = open(adress, 'r+')
         file.write("rs_generated = "+str(int(len_r)))
         file.close()
-        os.replace(adress, f"IC/MHN/Data/dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt")
+        os.replace(adress, f"MHN/Data/dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt")
     
-    adress = f"IC/MHN/Data/dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt"
+    adress = f"MHN/Data/dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt"
     file_read = open(adress, 'r')
     for j in range(qtde_param):
         file_read.readline()
@@ -206,27 +206,27 @@ def plot_delta_h(N, E, m, h, lista_ps, r0, rf, len_r, iterate_crit, T, wni, qni,
     ax.legend()
     
     fig.tight_layout()
-    folder_adress = f"IC/MHN/Figs/dynamic/N={N}"
+    folder_adress = f"MHN/Figs/dynamic/N={N}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"N={N}"
-        parent_dir = f"IC/MHN/Figs/dynamic"
+        parent_dir = f"MHN/Figs/dynamic"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
     
     folder_adress += f"/K={E//N}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"K={E//N}"
-        parent_dir = f"IC/MHN/Figs/dynamic/N={N}"
+        parent_dir = f"MHN/Figs/dynamic/N={N}"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
 
     folder_adress += f"/m={m}_h={h}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"m={m}_h={h}"
-        parent_dir = f"IC/MHN/Figs/dynamic/N={N}/K={E//N}"
+        parent_dir = f"MHN/Figs/dynamic/N={N}/K={E//N}"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
-    fig.savefig(f"IC/MHN/Figs/dynamic/N={N}/K={E//N}/m={m}_h={h}/delta_h_n={net}.png", dpi=400)
+    fig.savefig(f"MHN/Figs/dynamic/N={N}/K={E//N}/m={m}_h={h}/delta_h_n={net}.png", dpi=400)
     return fig
 
 def plot_resposta(N, E, m, h, lista_ps, r0, rf, len_r, iterate_crit, T, wni, qni, mode):
@@ -290,31 +290,31 @@ def plot_resposta(N, E, m, h, lista_ps, r0, rf, len_r, iterate_crit, T, wni, qni
         ax.text(0.8e-6,0.215, 'b', fontweight='bold', fontsize=20)
     
     fig.tight_layout()
-    folder_adress = f"IC/MHN/Figs/dynamic/N={N}"
+    folder_adress = f"MHN/Figs/dynamic/N={N}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"N={N}"
-        parent_dir = f"IC/MHN/Figs/dynamic"
+        parent_dir = f"MHN/Figs/dynamic"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
     
     folder_adress += f"/K={E//N}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"K={E//N}"
-        parent_dir = f"IC/MHN/Figs/dynamic/N={N}"
+        parent_dir = f"MHN/Figs/dynamic/N={N}"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
 
     folder_adress += f"/m={m}_h={h}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"m={m}_h={h}"
-        parent_dir = f"IC/MHN/Figs/dynamic/N={N}/K={E//N}"
+        parent_dir = f"MHN/Figs/dynamic/N={N}/K={E//N}"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
     
     if len(lista_ps) > 1:
-        fig.savefig(f"IC/MHN/Figs/dynamic/N={N}/K={E//N}/m={m}_h={h}/resposta_variosp_n={net}.png", dpi=400)
+        fig.savefig(f"MHN/Figs/dynamic/N={N}/K={E//N}/m={m}_h={h}/resposta_variosp_n={net}.png", dpi=400)
     else:
-        fig.savefig(f"IC/MHN/Figs/dynamic/N={N}/K={E//N}/m={m}_h={h}/p={lista_ps[0]}_n={net}.png", dpi=400)
+        fig.savefig(f"MHN/Figs/dynamic/N={N}/K={E//N}/m={m}_h={h}/p={lista_ps[0]}_n={net}.png", dpi=400)
     return fig
 
 def plot_Dynamic(N, E, m, h, lista_ps, r0, rf, len_r, T, wni, qni, mode):
@@ -361,24 +361,24 @@ def plot_Dynamic(N, E, m, h, lista_ps, r0, rf, len_r, T, wni, qni, mode):
     ax.set_xlabel(r"$\lambda$")
     ax.set_ylabel(r"$\Delta (dB)$")
 
-    folder_adress = f"IC/MHN/Figs/dynamic/N={N}"
+    folder_adress = f"MHN/Figs/dynamic/N={N}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"N={N}"
-        parent_dir = f"IC/MHN/Figs/dynamic"
+        parent_dir = f"MHN/Figs/dynamic"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
     
     folder_adress += f"/K={E//N}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"K={E//N}"
-        parent_dir = f"IC/MHN/Data/dynamic/N={N}"
+        parent_dir = f"MHN/Data/dynamic/N={N}"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
 
     folder_adress += f"/m={m}_h={h}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"m={m}_h={h}"
-        parent_dir = f"IC/MHN/Figs/dynamic/N={N}/K={E//N}"
+        parent_dir = f"MHN/Figs/dynamic/N={N}/K={E//N}"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
     
@@ -448,17 +448,17 @@ def plot_pcolor_varying_hm_critical_p_rect_grid(N, E, lista_ms, r0, rf, len_r, T
 
     fig.tight_layout()
     fig2.tight_layout()
-    folder_adress = f"IC/MHN/Figs/dynamic/N={N}"
+    folder_adress = f"MHN/Figs/dynamic/N={N}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"N={N}"
-        parent_dir = f"IC/MHN/Figs/dynamic"
+        parent_dir = f"MHN/Figs/dynamic"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
     
     folder_adress += f"/K={E//N}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"K={E//N}"
-        parent_dir = f"IC/MHN/Data/dynamic/N={N}"
+        parent_dir = f"MHN/Data/dynamic/N={N}"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
 
