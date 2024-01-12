@@ -126,7 +126,7 @@ def modular_F_dyn(P, m, h, p, systems, states, T, r):
     return Fs_per_module, stds_Fs_per_module
 
 def modular_file_opener(N,E,m,h,p,r0,rf,len_r,T,net):
-    folder_adress = f"IC/MHN/Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/"
+    folder_adress = f"N={N}/K={E//N}/m={m}_h={h}/"
     folder_existance_check(folder_adress)
     datas = os.listdir(folder_adress)
     adresses = []
@@ -142,10 +142,10 @@ def modular_file_opener(N,E,m,h,p,r0,rf,len_r,T,net):
             adresses.append(folder_adress + arq)
             break
     if len(adresses) == 0:
-        file = open(f"IC/MHN/Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt", 'w')
+        file = open(f"N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt", 'w')
         file.write("rs_generated = 0\n")
         file.close()
-        adresses = [f"IC/MHN/Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt"]
+        adresses = [f"N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt"]
     return adresses
 
 def modular_file_manager(adress, P, E, m, h, net, p, r0, rf, len_r, T):
@@ -176,15 +176,15 @@ def modular_file_manager(adress, P, E, m, h, net, p, r0, rf, len_r, T):
                 file_correct.seek(0)
                 file_correct.write("rs_generated = "+str(int(len_r)))
                 file_correct.close()
-                os.replace(adress, f"IC/MHN/Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{total_rs}).txt")
+                os.replace(adress, f"N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{total_rs}).txt")
                 exit()
         file_app.close()
         file_correct = open(adress, 'r+')
         file_correct.write("rs_generated = "+str(int(len_r)))
         file_correct.close()
-        os.replace(adress, f"IC/MHN/Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt")
+        os.replace(adress, f"N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt")
     
-    adress = f"IC/MHN/Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt"
+    adress = f"N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt"
     file_read = open(adress, 'r')
     
     r = np.zeros(len_r)
