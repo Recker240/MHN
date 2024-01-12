@@ -131,7 +131,7 @@ def modular_file_opener(N,E,m,h,p,r0,rf,len_r,T,net):
     for arq in datas:
         qtos_ = 0
         for i, carac in enumerate(arq):
-            if carac=='_':
+            if carac=="_":
                 qtos_ += 1
             if qtos_ == 3:
                 pos_ = i
@@ -140,7 +140,7 @@ def modular_file_opener(N,E,m,h,p,r0,rf,len_r,T,net):
             adresses.append(folder_adress + arq)
             break
     if len(adresses) == 0:
-        file = open(f"MHN/Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt", 'w')
+        file = open(f"MHN/Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt", "w")
         file.write("rs_generated = 0\n")
         file.close()
         adresses = [f"MHN/Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt"]
@@ -148,26 +148,26 @@ def modular_file_opener(N,E,m,h,p,r0,rf,len_r,T,net):
 
 def modular_file_manager(adress, P, E, m, h, net, p, r0, rf, len_r, T):
     lista_rs = 10**np.linspace(np.log10(r0),np.log10(rf),len_r,endpoint=True)
-    file = open(adress, 'r')
+    file = open(adress, "r")
     rs_generated = int((sum(1 for line in file) - 1)/3)
     file.close()
     N, k = P.shape
     
     if rs_generated < len_r:
-        file_app = open(adress, 'a')
+        file_app = open(adress, "a")
         rs_faltam = lista_rs[(rs_generated):]
 
-        for r in tqdm(rs_faltam, desc=f'Calculando F para p={p}', colour='yellow', leave=False,miniters=1):
+        for r in tqdm(rs_faltam, desc=f"Calculando F para p={p}", colour="yellow", leave=False,miniters=1):
             try:
                 pmF, std_pmF = modular_F_dyn(P, m, h, p, systems, states, T, r)
                 file_app.write(str(r)+" \n\t")
                 file_app.writelines([str(oi)+" \t" for oi in pmF])
-                file_app.write('\n\t')
+                file_app.write("\n\t")
                 file_app.writelines([str(oi)+" \t" for oi in std_pmF])
-                file_app.write('\n')
+                file_app.write("\n")
             except KeyboardInterrupt:
                 file_app.close()
-                file_correct = open(adress, 'r+')
+                file_correct = open(adress, "r+")
                 file_correct.seek(0)
                 total_rs = (sum(1 for line in file_correct) - 1)/3
                 print(total_rs)
@@ -177,13 +177,13 @@ def modular_file_manager(adress, P, E, m, h, net, p, r0, rf, len_r, T):
                 os.replace(adress, f"MHN/Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{total_rs}).txt")
                 exit()
         file_app.close()
-        file_correct = open(adress, 'r+')
+        file_correct = open(adress, "r+")
         file_correct.write("rs_generated = "+str(int(len_r)))
         file_correct.close()
         os.replace(adress, f"MHN/Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt")
     
     adress = f"MHN/Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt"
-    file_read = open(adress, 'r')
+    file_read = open(adress, "r")
     
     r = np.zeros(len_r)
     pmF = np.zeros((len_r, (m+1)**(h-1)))
@@ -199,19 +199,19 @@ def modular_file_manager(adress, P, E, m, h, net, p, r0, rf, len_r, T):
 
 def plot_all_F_curves_mpl(N, E, m, h, lista_ps, r0, rf, len_r, iterate_crit, T, mode):
     fig, ax = plt.subplots(figsize=(12,8))
-    ax.set_xscale('log')
+    ax.set_xscale("log")
     P, p_crit, net = Adjac_file_man(N, E, m, h, mode)
     lamb_base = 1/p_crit
     if iterate_crit:
         lista_ps.append(p_crit)
 
-    colormaps = ['Purples', 'Blues', 'Greens', 'Oranges', 'Reds',
-                      'YlOrBr', 'YlOrRd', 'OrRd', 'PuRd', 'RdPu', 'BuPu',
-                      'GnBu', 'PuBu', 'YlGnBu', 'PuBuGn', 'BuGn', 'YlGn']
+    colormaps = ["Purples", "Blues", "Greens", "Oranges", "Reds",
+                      "YlOrBr", "YlOrRd", "OrRd", "PuRd", "RdPu", "BuPu",
+                      "GnBu", "PuBu", "YlGnBu", "PuBuGn", "BuGn", "YlGn"]
     Delta = np.zeros(((m+1)**(h-1), len(lista_ps) ))
     sig_Delta = np.zeros(((m+1)**(h-1), len(lista_ps)))
 
-    for i, p in enumerate(tqdm(lista_ps,desc='Calculando as curvas de resposta...',colour='red')):
+    for i, p in enumerate(tqdm(lista_ps,desc="Calculando as curvas de resposta...",colour="red")):
         try:
             adress = modular_file_opener(N, E, m, h, p, r0, rf, len_r, T, net)[0]
         except IndexError:
@@ -224,8 +224,8 @@ def plot_all_F_curves_mpl(N, E, m, h, lista_ps, r0, rf, len_r, iterate_crit, T, 
             F = pmF[:,j]
             std_F = std_pmF[:,j]
             if np.count_nonzero(F) != 0:
-                # ax.errorbar(r, F, std_F, linestyle='none', marker='.', color=my_cmap((j-((m+1)**(h-1)))/((m+1)**(h-1))), label=fr'$F_[{np.base_repr(j,m+1)}]$')
-                linha, = ax.plot(r, F, marker='.', color=cmap(1 - 0.7*j/((m+1)**(h-1))))
+                # ax.errorbar(r, F, std_F, linestyle="none", marker=".", color=my_cmap((j-((m+1)**(h-1)))/((m+1)**(h-1))), label=fr"$F_[{np.base_repr(j,m+1)}]$")
+                linha, = ax.plot(r, F, marker=".", color=cmap(1 - 0.7*j/((m+1)**(h-1))))
                 param = find_F_0(r, F, 1e-3)
                 ang, expo, lin = param
                 F_0 = 0 if lamb <= 1 else lin
@@ -233,11 +233,11 @@ def plot_all_F_curves_mpl(N, E, m, h, lista_ps, r0, rf, len_r, iterate_crit, T, 
                 F_tax_inf = F_0 + tax_inf*(F_max - F_0)
                 F_tax_sup = F_0 + tax_sup*(F_max - F_0)
                 # rmin, F_rmin, rmax, F_rmax, Delta[j,i], sig_Delta[j,i] = find_dyn_range(r, F, F_tax_inf, F_tax_sup)
-        linha.set_label(r'$\lambda = $'+ f'{round(lamb,4)}')
+        linha.set_label(r"$\lambda = $"+ f"{round(lamb,4)}")
     
     # print(pd.DataFrame(Delta, columns=lista_ps, index=[np.base_repr(j,m+1) for j in range((m+1)**(h-1))]))
-    ax.set_xlabel(r'$r (ms^{-1})$')
-    ax.set_ylabel(r'$F (ms^{-1})$')
+    ax.set_xlabel(r"$r (ms^{-1})$")
+    ax.set_ylabel(r"$F (ms^{-1})$")
     ax.legend(ncol=len(lista_ps))
     fig.tight_layout()
 
@@ -254,12 +254,12 @@ def plot_all_dynamic_curves_mpl(N, E, m, h, lista_ps, r0, rf, len_r, T, mode):
 
     Delta = np.zeros(((m+1)**(h-1), len(lista_ps)))
     sig_Delta = np.zeros(((m+1)**(h-1), len(lista_ps)))
-    colormaps = ['Purples', 'Blues', 'Greens', 'Oranges', 'Reds',
-                      'YlOrBr', 'YlOrRd', 'OrRd', 'PuRd', 'RdPu', 'BuPu',
-                      'GnBu', 'PuBu', 'YlGnBu', 'PuBuGn', 'BuGn', 'YlGn', 'viridis', 'plasma', 'inferno', 'magma', 'cividis','ocean', 'gist_earth', 'terrain', 'gnuplot', 'gnuplot2', 'CMRmap','cubehelix', 'brg', 'rainbow', 'jet',
-                      'turbo']
+    colormaps = ["Purples", "Blues", "Greens", "Oranges", "Reds",
+                      "YlOrBr", "YlOrRd", "OrRd", "PuRd", "RdPu", "BuPu",
+                      "GnBu", "PuBu", "YlGnBu", "PuBuGn", "BuGn", "YlGn", "viridis", "plasma", "inferno", "magma", "cividis","ocean", "gist_earth", "terrain", "gnuplot", "gnuplot2", "CMRmap","cubehelix", "brg", "rainbow", "jet",
+                      "turbo"]
 
-    for i, p in enumerate(tqdm(lista_ps, desc=f'Calculando curvas de resposta...')):
+    for i, p in enumerate(tqdm(lista_ps, desc=f"Calculando curvas de resposta...")):
         try:
             adress = modular_file_opener(N, E, m, h, p, r0, rf, len_r, T, net)[0]
         except IndexError:
@@ -279,10 +279,10 @@ def plot_all_dynamic_curves_mpl(N, E, m, h, lista_ps, r0, rf, len_r, T, mode):
                 F_tax_inf = F_0 + tax_inf*(F_max - F_0)
                 F_tax_sup = F_0 + tax_sup*(F_max - F_0)
                 rmin, F_rmin, rmax, F_rmax, Delta[j,i], sig_Delta[j,i] = find_dyn_range(r, F, F_tax_inf, F_tax_sup)
-                pt, = ax.plot(lamb, Delta[j,i], '.', color=cmap(1 - 0.7*j/((m+1)**(h-1))))
+                pt, = ax.plot(lamb, Delta[j,i], ".", color=cmap(1 - 0.7*j/((m+1)**(h-1))))
                 pt.set_label(to_base_m1(j,m+1)) if i==0 else ...
-    ax.set_xlabel(r'$\lambda$')
-    ax.set_ylabel(r'$\Delta (dB)$')
+    ax.set_xlabel(r"$\lambda$")
+    ax.set_ylabel(r"$\Delta (dB)$")
     ax.legend(ncol=h+1)
     fig.tight_layout()
 
@@ -310,7 +310,7 @@ def plot_all_F_curves_str(N, E, m, h, r0, rf, len_r, T, mode, load):
         F = pmF[:,j]
         std_F = std_pmF[:,j]
         if np.count_nonzero(F) != 0:
-            fig.add_trace(go.Scatter(mode='markers',x=r, y=F, error_y=dict(type='data',array=std_F,visible=False),name=f'{np.base_repr(j,m+1)}'), 1,1)
+            fig.add_trace(go.Scatter(mode="markers",x=r, y=F, error_y=dict(type="data",array=std_F,visible=False),name=f"{np.base_repr(j,m+1)}"), 1,1)
             F_0 = 0
             F_max = 1/states
             F_tax_inf = F_0 + tax_inf*(F_max - F_0)
@@ -321,29 +321,29 @@ def plot_all_F_curves_str(N, E, m, h, r0, rf, len_r, T, mode, load):
     indexes_enuples = [str(to_base_m1(j,m+1)) for j in range(num_modules)]
     degrees = [np.count_nonzero(to_base_m1(j,m+1)) for j in range(num_modules)]
     Delta_df = pd.DataFrame(np.matrix.transpose(np.array([Delta, sig_Delta, indexes_enuples, degrees])), columns=["Delta", "Erro", "Módulo", "Grau Hierárquico"])
-    Delta_df['Delta'] = pd.to_numeric(Delta_df['Delta'])
-    Delta_df['Erro'] = pd.to_numeric(Delta_df['Erro'])
-    Delta_df['Grau Hierárquico'] = pd.to_numeric(Delta_df['Grau Hierárquico'])
+    Delta_df["Delta"] = pd.to_numeric(Delta_df["Delta"])
+    Delta_df["Erro"] = pd.to_numeric(Delta_df["Erro"])
+    Delta_df["Grau Hierárquico"] = pd.to_numeric(Delta_df["Grau Hierárquico"])
 
     if load:
-        fig.update_xaxes(type='log',row=1,col=1)
-        fig.update_layout(xaxis_title='r(kHz)',yaxis_title='F (kHz)')
-        fig2 = go.Figure(data=go.Scatter(mode='markers', x=Delta_df["Grau Hierárquico"], y=Delta_df["Delta"], text=Delta_df["Módulo"]),layout_yaxis_range=[24.5,27.5])
+        fig.update_xaxes(type="log",row=1,col=1)
+        fig.update_layout(xaxis_title="r(kHz)",yaxis_title="F (kHz)")
+        fig2 = go.Figure(data=go.Scatter(mode="markers", x=Delta_df["Grau Hierárquico"], y=Delta_df["Delta"], text=Delta_df["Módulo"]),layout_yaxis_range=[24.5,27.5])
         fig3 = make_subplots()
         for i in range(1,h):
             mask = (Delta_df["Grau Hierárquico"]==i) & (Delta_df["Delta"] > 1)
             masked_Deltas = np.array(Delta_df[mask]["Delta"])
             len_masked_Deltas = len(masked_Deltas)
             diffs_hist, diffs_bins = np.histogram(masked_Deltas - Delta[0], density=True, bins=len_masked_Deltas//10)
-            fig3.add_trace(go.Scatter(mode='markers', x=diffs_bins, y=diffs_hist, name=f'grau {i}', text=f'D = {masked_Deltas[len_masked_Deltas//2]}'))
+            fig3.add_trace(go.Scatter(mode="markers", x=diffs_bins, y=diffs_hist, name=f"grau {i}", text=f"D = {masked_Deltas[len_masked_Deltas//2]}"))
 
-        st.text(f'Curvas de resposta e de faixa dinâmica para N={N}, K={E//N}, m={m} e h={h}:')
+        st.text(f"Curvas de resposta e de faixa dinâmica para N={N}, K={E//N}, m={m} e h={h}:")
         st.write(Delta_df)
         # st.write("Curvas de resposta para cada módulo")
         # st.plotly_chart(fig, use_container_width=True)
-        st.write('Faixas dinâmicas de cada grau hierárquico')
+        st.write("Faixas dinâmicas de cada grau hierárquico")
         st.plotly_chart(fig2, use_container_width=True)
-        st.latex(r'Diferença de cada \Delta para o valor da rede toda')
+        st.latex(r"Diferença de cada \Delta para o valor da rede toda")
         st.plotly_chart(fig3, use_container_width=True)
     return fig
 
@@ -357,8 +357,8 @@ wni, qni = N, N//10
 systems, states = 30, 5
 tax_inf, tax_sup = 0.1, 0.9
 
-fig = plot_all_F_curves_str(N, E, m, h, 1e-5, 1e+2, 50, T, 'r1', True)
-# fig1 = plot_all_F_curves_mpl(N, E, m, h, [], 1e-5, 1e+2, 50, True, T, 'r1')
+fig = plot_all_F_curves_str(N, E, m, h, 1e-5, 1e+2, 50, T, "r1", True)
+# fig1 = plot_all_F_curves_mpl(N, E, m, h, [], 1e-5, 1e+2, 50, True, T, "r1")
 # plt.show()
 
 
