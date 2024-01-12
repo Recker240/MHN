@@ -334,7 +334,7 @@ def plot_all_F_curves_str(N, E, m, h, r0, rf, len_r, T, mode, load):
             mask = (Delta_df["Grau Hierárquico"]==i) & (Delta_df["Delta"] > 1)
             masked_Deltas = np.array(Delta_df[mask]["Delta"])
             len_masked_Deltas = len(masked_Deltas)
-            diffs_hist, diffs_bins = np.histogram(masked_Deltas - Delta[0], density=True, bins=len_masked_Deltas//10)
+            diffs_hist, diffs_bins = np.histogram(masked_Deltas - Delta[0], density=True, bins=len_masked_Deltas)
             fig3.add_trace(go.Scatter(mode="markers", x=diffs_bins, y=diffs_hist, name=f"grau {i}", text=f"D = {masked_Deltas[len_masked_Deltas//2]}"))
 
         st.text(f"Curvas de resposta e de faixa dinâmica para N={N}, K={E//N}, m={m} e h={h}:")
