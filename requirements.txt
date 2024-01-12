@@ -1,9 +1,0 @@
-numpy
-matplotlib
-numba
-tqdm
-pandas
-plotly
-streamlit
-scipy
-networkx
