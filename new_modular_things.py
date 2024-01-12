@@ -348,18 +348,39 @@ def plot_all_F_curves_str(N, E, m, h, r0, rf, len_r, T, mode, load):
     return fig
 
         
-N, K, m, h = 10125, 100, 15, 4
-E = N*K
-T = 1000
+def mh_finder(selected_mh):
+    for l in range(len(selected_mh)-1,-1,-1):
+        if selected_mh[l] == '=':
+            h = int(selected_mh[(l+1):])
+            break
+    for i in range(len(selected_mh)):
+        aux = selected_mh[i]
+        if selected_mh[i] == '=':
+            for j in range(i,len(selected_mh), 1):
+                aux2 = selected_mh[j]
+                if selected_mh[j] == '_':
+                    m = selected_mh[(i+1):j]
+                    return m, h
+
+
+available_Ns = os.listdir("Data/modular_dynamic/")
+selected_N = st.selectbox("Selecione o Tamanho desejado para a rede", available_Ns)
+available_Ks = os.listdir("Data/modular_dynamic/"+selected_N+"/")
+selected_K = st.selectbox("Selecione o grau médio desejado da rede", available_Ks)
+available_mh = os.listdir("Data/modular_dynamic/"+selected_N+"/"+selected_K+"/")
+selected_mh = st.selectbox("Selecione o padrão hierárquico desejado da rede", available_mh)
+
+folder_adress = "Data/modular_dynamic/"+selected_N+"/"+selected_K+"/"+selected_mh
+net = os.listdir(folder_adress)[0][2]
+
+N = int(selected_N[2:])
+E = int(selected_K[2:])*N
+m, h = mh_finder(selected_mh)
 
 # Globals
 wni, qni = N, N//10
 systems, states = 30, 5
 tax_inf, tax_sup = 0.1, 0.9
-
-fig = plot_all_F_curves_str(N, E, m, h, 1e-5, 1e+2, 50, T, "r1", True)
-# fig1 = plot_all_F_curves_mpl(N, E, m, h, [], 1e-5, 1e+2, 50, True, T, "r1")
-# plt.show()
-
-
+T = 1000
+fig = plot_all_F_curves_str(N, E, m, h, 1e-5, 1e+2, 50, T, 'r'+str(net), True)
 
