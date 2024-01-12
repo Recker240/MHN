@@ -124,7 +124,7 @@ def modular_F_dyn(P, m, h, p, systems, states, T, r):
     return Fs_per_module, stds_Fs_per_module
 
 def modular_file_opener(N,E,m,h,p,r0,rf,len_r,T,net):
-    folder_adress = f"MHN/Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/"
+    folder_adress = f"Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/"
     folder_existance_check(folder_adress)
     datas = os.listdir(folder_adress)
     adresses = []
@@ -140,10 +140,10 @@ def modular_file_opener(N,E,m,h,p,r0,rf,len_r,T,net):
             adresses.append(folder_adress + arq)
             break
     if len(adresses) == 0:
-        file = open(f"MHN/Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt", "w")
+        file = open(f"Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt", "w")
         file.write("rs_generated = 0\n")
         file.close()
-        adresses = [f"MHN/Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt"]
+        adresses = [f"Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt"]
     return adresses
 
 def modular_file_manager(adress, P, E, m, h, net, p, r0, rf, len_r, T):
@@ -174,15 +174,15 @@ def modular_file_manager(adress, P, E, m, h, net, p, r0, rf, len_r, T):
                 file_correct.seek(0)
                 file_correct.write("rs_generated = "+str(int(len_r)))
                 file_correct.close()
-                os.replace(adress, f"MHN/Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{total_rs}).txt")
+                os.replace(adress, f"Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{total_rs}).txt")
                 exit()
         file_app.close()
         file_correct = open(adress, "r+")
         file_correct.write("rs_generated = "+str(int(len_r)))
         file_correct.close()
-        os.replace(adress, f"MHN/Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt")
+        os.replace(adress, f"Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt")
     
-    adress = f"MHN/Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt"
+    adress = f"Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt"
     file_read = open(adress, "r")
     
     r = np.zeros(len_r)
@@ -241,7 +241,7 @@ def plot_all_F_curves_mpl(N, E, m, h, lista_ps, r0, rf, len_r, iterate_crit, T, 
     ax.legend(ncol=len(lista_ps))
     fig.tight_layout()
 
-    fig_locator = f"MHN/Figs/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/"
+    fig_locator = f"Figs/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/"
     folder_existance_check(fig_locator)
     fig.savefig(fig_locator+f"all_modular_response_n={net}.png")
     return fig
@@ -286,7 +286,7 @@ def plot_all_dynamic_curves_mpl(N, E, m, h, lista_ps, r0, rf, len_r, T, mode):
     ax.legend(ncol=h+1)
     fig.tight_layout()
 
-    fig_locator = f"MHN/Figs/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/"
+    fig_locator = f"Figs/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/"
     folder_existance_check(fig_locator)
     fig.savefig(fig_locator+f"all_modular_dynamic_n={net}.png")
     return fig
