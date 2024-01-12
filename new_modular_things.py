@@ -241,7 +241,7 @@ def plot_all_F_curves_mpl(N, E, m, h, lista_ps, r0, rf, len_r, iterate_crit, T, 
     ax.legend(ncol=len(lista_ps))
     fig.tight_layout()
 
-    fig_locator = f"IC/MHN/Figs/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/"
+    fig_locator = f"N={N}/K={E//N}/m={m}_h={h}/"
     folder_existance_check(fig_locator)
     fig.savefig(fig_locator+f"all_modular_response_n={net}.png")
     return fig
@@ -286,7 +286,7 @@ def plot_all_dynamic_curves_mpl(N, E, m, h, lista_ps, r0, rf, len_r, T, mode):
     ax.legend(ncol=h+1)
     fig.tight_layout()
 
-    fig_locator = f"IC/MHN/Figs/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/"
+    fig_locator = f"N={N}/K={E//N}/m={m}_h={h}/"
     folder_existance_check(fig_locator)
     fig.savefig(fig_locator+f"all_modular_dynamic_n={net}.png")
     return fig
