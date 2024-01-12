@@ -360,7 +360,7 @@ def mh_finder(selected_mh):
                 aux2 = selected_mh[j]
                 if selected_mh[j] == '_':
                     m = selected_mh[(i+1):j]
-                    return m, h
+                    return int(m), int(h)
 
 
 available_Ns = os.listdir("Data/modular_dynamic/")
