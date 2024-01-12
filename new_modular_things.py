@@ -335,9 +335,9 @@ def plot_all_F_curves_str(N, E, m, h, r0, rf, len_r, T, mode, load):
             masked_Deltas = np.array(Delta_df[mask]["Delta"])
             len_masked_Deltas = len(masked_Deltas)
             diffs_hist, diffs_bins = np.histogram(masked_Deltas - Delta[0], density=True, bins=len_masked_Deltas)
-            fig3.add_trace(go.Scatter(mode="markers", x=diffs_bins, y=diffs_hist, name=f"grau {i}", text=f"D = {masked_Deltas[len_masked_Deltas//2]}"))
+            fig3.add_trace(go.Scatter(mode="markers", x=diffs_bins, y=diffs_hist, name=f"grau {i}", text=f"Delta = {diffs_bins}"))
 
-        st.text(f"Curvas de resposta e de faixa dinâmica para N={N}, K={E//N}, m={m} e h={h}:")
+        st.write(f"Curvas de resposta e de faixa dinâmica para N={N}, K={E//N}, m={m} e h={h}:")
         st.write(Delta_df)
         # st.write("Curvas de resposta para cada módulo")
         # st.plotly_chart(fig, use_container_width=True)
@@ -362,13 +362,18 @@ def mh_finder(selected_mh):
                     m = selected_mh[(i+1):j]
                     return int(m), int(h)
 
-
+st.set_page_config(layout="wide")
+st.write("Selecione os parâmetros desejados da rede:")
+cols = st.columns(3)
 available_Ns = os.listdir("Data/modular_dynamic/")
-selected_N = st.selectbox("Selecione o Tamanho desejado para a rede", available_Ns)
+with cols[0]:
+    selected_N = st.selectbox("Número de nós", available_Ns)
 available_Ks = os.listdir("Data/modular_dynamic/"+selected_N+"/")
-selected_K = st.selectbox("Selecione o grau médio desejado da rede", available_Ks)
+with cols[1]:
+    selected_K = st.selectbox("Grau médio", available_Ks)
 available_mh = os.listdir("Data/modular_dynamic/"+selected_N+"/"+selected_K+"/")
-selected_mh = st.selectbox("Selecione o padrão hierárquico desejado da rede", available_mh)
+with cols[2]:
+    selected_mh = st.selectbox("Padrão hierárquico", available_mh)
 
 folder_adress = "Data/modular_dynamic/"+selected_N+"/"+selected_K+"/"+selected_mh
 net = os.listdir(folder_adress)[0][2]
