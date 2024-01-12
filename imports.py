@@ -123,7 +123,7 @@ def Adjac_file_man(N, E, m, h, mode):
     Returns:
         Nxmax_k float64: Matriz de vizinhos.
     """
-    folder_adress = f'MHN/Data/Networks/N={N}/m={m}_h={h}'
+    folder_adress = f"MHN/Data/Networks/N={N}/m={m}_h={h}"
     
     folder_existance_check(folder_adress)
     
@@ -132,7 +132,7 @@ def Adjac_file_man(N, E, m, h, mode):
     for arq in datas:
         qtos_ = 0
         for i, carac in enumerate(arq):
-            if carac=='_':
+            if carac=="_":
                 qtos_ += 1
             if qtos_ == 3:
                 pos_ = i
@@ -144,18 +144,18 @@ def Adjac_file_man(N, E, m, h, mode):
     common_adress = f"MHN/Data/Networks/N={N}/m={m}_h={h}/"
     folder_existance_check(common_adress)
         
-    if mode[0] == 'w':
+    if mode[0] == "w":
         A = adjacency_maker(N, E, m, h)
         P = CIJ_to_P(A)
-        np.savetxt(common_adress+f'K={E//N}_m={m}_h={h}_{iter}.txt', P, '%i', delimiter='\t', newline='\n')
-        oi = open(common_adress+f'K={E//N}_m={m}_h={h}_{iter}.txt', 'a')
-        oi.write(f'#{1/autoval_JG(A)}')
+        np.savetxt(common_adress+f"K={E//N}_m={m}_h={h}_{iter}.txt", P, "%i", delimiter="\t", newline="\n")
+        oi = open(common_adress+f"K={E//N}_m={m}_h={h}_{iter}.txt", "a")
+        oi.write(f"#{1/autoval_JG(A)}")
         oi.close()
         p_crit = 1/autoval_JG(A)
         net = iter
-    elif mode[0] == 'r':
-        P = np.loadtxt(common_adress+f'K={E//N}_m={m}_h={h}_{mode[1:]}.txt',dtype='int',delimiter='\t', comments='#')
-        oi = open(common_adress+f'K={E//N}_m={m}_h={h}_{mode[1:]}.txt', 'r')
+    elif mode[0] == "r":
+        P = np.loadtxt(common_adress+f"K={E//N}_m={m}_h={h}_{mode[1:]}.txt",dtype="int",delimiter="\t", comments="#")
+        oi = open(common_adress+f"K={E//N}_m={m}_h={h}_{mode[1:]}.txt", "r")
         for l in range(N):
             oi.readline()
         oi.seek(oi.tell() + 1)
@@ -191,7 +191,7 @@ def iterator_count(CIJ, x, states):
     Deprecated, because ```CIJ``` is too memory and time-consuming for a typical iteration. Use ```P_iterator``` instead.
 
     Args:
-        CIJ ((N,N) array): The connectivity matrix, of p's and 0's.
+        CIJ ((N,N) array): The connectivity matrix, of p"s and 0"s.
         x ((N,) array): Current state of the network.
         states (int): Number of possible states. 0 and 1 are reserved for the inactive and polarized state, so ```states > 2```.
 
@@ -312,7 +312,7 @@ def time_evaluation(CIJ, states, T, wni, qni):
     Deprecated, because ```CIJ``` is too memory and time-consuming for a typical iteration. Use ```P_iterator``` instead.
     
     Args:
-        CIJ ((N,N) array): The connectivity matrix, of p's and 0's.
+        CIJ ((N,N) array): The connectivity matrix, of p"s and 0"s.
         states (int): Number of possible states. 0 and 1 are reserved for the inactive and polarized state, so ```states > 2```.
         T (int): Number of Time steps to be evaluated.
         wni (int): The first ```wni``` nodes that will (probably) be activated. See ```initial_position``` for details.
@@ -462,7 +462,7 @@ def leitura_ate_tab(linha):
     el = []
     antigo_barrat = 0
     for i in range(1,len(linha)):
-        if linha[i] == '\t':
+        if linha[i] == "\t":
             barrat = i
             if antigo_barrat != 0:
                 el.append(linha[(antigo_barrat+1):barrat])
@@ -479,7 +479,7 @@ def folder_existance_check(file_adress):
         return
     bars = [0]
     for i, carac in enumerate(file_adress):
-        if carac == '/':
+        if carac == "/":
             bars.append(i)
     for j in range(1,len(bars)):
         if os.path.exists(file_adress[:bars[j]]) == False:
