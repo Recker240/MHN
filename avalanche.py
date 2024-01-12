@@ -58,25 +58,25 @@ def acumulator(counts):
     return soma
 
 def file_opener(N,E,m,h,p,net,T, mf):
-    folder_adress = f"IC/MHN/Data/{mf}/N={N}"
+    folder_adress = f"MHN/Data/{mf}/N={N}"
     
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"N={N}"
-        parent_dir = f"IC/MHN/Data/{mf}"
+        parent_dir = f"MHN/Data/{mf}"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
 
     folder_adress += f"/K={E//N}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"K={E//N}"
-        parent_dir = f"IC/MHN/Data/{mf}/N={N}"
+        parent_dir = f"MHN/Data/{mf}/N={N}"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
         
     folder_adress += f"/m={m}_h={h}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"m={m}_h={h}"
-        parent_dir = f"IC/MHN/Data/{mf}/N={N}/K={E//N}"
+        parent_dir = f"MHN/Data/{mf}/N={N}/K={E//N}"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
 
@@ -136,7 +136,7 @@ def Spik_dur(adress, P, E, m, h, p, net, T, desired_sys):
                 file.seek(0)
                 file.write(f"systems = {total_sys}\n") # Atualiza a quantidade de sistemas in-file
                 file.close()
-                os.replace(adress, f"IC/MHN/Data/PS_PD/N={P.shape[0]}/K={E//N}/m={m}_h={h}/n={net}_p={p}_T={T}_sys={total_sys}.txt") # Atualiza a quantidade de sistemas no nome
+                os.replace(adress, f"MHN/Data/PS_PD/N={P.shape[0]}/K={E//N}/m={m}_h={h}/n={net}_p={p}_T={T}_sys={total_sys}.txt") # Atualiza a quantidade de sistemas no nome
                 raise KeyboardInterrupt
             file.write(str(spikes[l])+" \t "+str(duration[l])+"\n")
         file.close()
@@ -145,9 +145,9 @@ def Spik_dur(adress, P, E, m, h, p, net, T, desired_sys):
         file.seek(0)
         file.write(f"systems = {total_sys}") # Atualiza o contador de sistemas in-file
         file.close()
-        os.replace(adress, f"IC/MHN/Data/PS_PD/N={P.shape[0]}/K={E//N}/m={m}_h={h}/n={net}_p={p}_T={T}_sys={desired_sys}.txt") # Atualiza o contador de sistemas no nome.
+        os.replace(adress, f"MHN/Data/PS_PD/N={P.shape[0]}/K={E//N}/m={m}_h={h}/n={net}_p={p}_T={T}_sys={desired_sys}.txt") # Atualiza o contador de sistemas no nome.
     
-    adress = f"IC/MHN/Data/PS_PD/N={P.shape[0]}/K={E//N}/m={m}_h={h}/n={net}_p={p}_T={T}_sys={desired_sys}.txt"
+    adress = f"MHN/Data/PS_PD/N={P.shape[0]}/K={E//N}/m={m}_h={h}/n={net}_p={p}_T={T}_sys={desired_sys}.txt"
     file_read = open(adress, 'r') # Abre o arquivo com o nome atualizado
     file_read.readline(9)
     generated = int(file_read.readline().strip()) # Obtém a quantidade de sistemas presentes
@@ -177,9 +177,9 @@ def med_spik_dur(adress, N, E, m, h, p, net, T, spikes, duration):
         file.seek(0)
         file.write("systems = "+str(systems)+"\n")
         file.close()
-        os.replace(adress, f"IC/MHN/Data/medS_D/N={N}/K={E//N}/m={m}_h={h}/n={net}_p={p}_T={T}_sys={systems}.txt")
+        os.replace(adress, f"MHN/Data/medS_D/N={N}/K={E//N}/m={m}_h={h}/n={net}_p={p}_T={T}_sys={systems}.txt")
     
-    adress = f"IC/MHN/Data/medS_D/N={N}/K={E//N}/m={m}_h={h}/n={net}_p={p}_T={T}_sys={systems}.txt"
+    adress = f"MHN/Data/medS_D/N={N}/K={E//N}/m={m}_h={h}/n={net}_p={p}_T={T}_sys={systems}.txt"
     file = open(adress, 'r')
     med_spik = np.zeros(systems)
     for i in range(param_qtde):
@@ -294,24 +294,24 @@ def mixed_avalanche_plotter(N, E, m, h, lista_ps, iterate_crit, sys, T, Nhist, m
     fig.tight_layout(h_pad=6)
     fig2.tight_layout(h_pad=6)
     
-    folder_adress = f"IC/MHN/Figs/avalanche/N={N}"
+    folder_adress = f"MHN/Figs/avalanche/N={N}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"N={N}"
-        parent_dir = f"IC/MHN/Figs/avalanche/"
+        parent_dir = f"MHN/Figs/avalanche/"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
     
     folder_adress += f"/K={E//N}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"K={E//N}"
-        parent_dir = f"IC/MHN/Figs/avalanche/N={N}"
+        parent_dir = f"MHN/Figs/avalanche/N={N}"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
     
     folder_adress += f"/m={m}_h={h}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"m={m}_h={h}"
-        parent_dir = f"IC/MHN/Figs/avalanche/N={N}/K={E//N}"
+        parent_dir = f"MHN/Figs/avalanche/N={N}/K={E//N}"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
 
@@ -350,17 +350,17 @@ def Kinouchi_acum_plotter(lista_Ns, lista_Es, m, h, T, sys, Nhist, mode_lst):
     ax2[1].set_ylabel(r"$\zeta (D) \cdot D^{1}$")
     fig2.tight_layout()
     
-    folder_adress = f"IC/MHN/Figs/avalanche/m={m}_h={h}"
+    folder_adress = f"MHN/Figs/avalanche/m={m}_h={h}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"m={m}_h={h}"
-        parent_dir = f"IC/MHN/Figs/avalanche"
+        parent_dir = f"MHN/Figs/avalanche"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
     
     folder_adress += f"/K={E//N}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"K={E//N}"
-        parent_dir = f"IC/MHN/Figs/avalanche/m={m}_h={h}"
+        parent_dir = f"MHN/Figs/avalanche/m={m}_h={h}"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
         
