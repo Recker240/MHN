@@ -382,7 +382,7 @@ N = int(selected_N[2:])
 E = int(selected_K[2:])*N
 m, h = mh_finder(selected_mh)
 
-st.write(f"Nesse caso, há módulos de tamanhos {[N/(m**(h-k)) for k in range(h)]}.")
+st.write(f"Nesse caso, há módulos de tamanhos {[N/(m**(h-k)) for k in range(1,h)]}.")
 # Globals
 wni, qni = N, N//10
 systems, states = 30, 5
