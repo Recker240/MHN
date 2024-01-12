@@ -66,25 +66,25 @@ def P_node_index(P, p, states, T, wni, qni):
     return x
 
 def file_opener(N,E,m,h,p0,pf,len_p,net,sys_per_p,T):
-    folder_adress = f"IC/MHN/Data/mean_rho/N={N}"
+    folder_adress = f"MHN/Data/mean_rho/N={N}"
     
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"N={N}"
-        parent_dir = f"IC/MHN/Data/mean_rho"
+        parent_dir = f"MHN/Data/mean_rho"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
     
     folder_adress += f"/K={E//N}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"K={E//N}"
-        parent_dir = f"IC/MHN/Data/mean_rho/N={N}"
+        parent_dir = f"MHN/Data/mean_rho/N={N}"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
 
     folder_adress += f"/m={m}_h={h}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"m={m}_h={h}"
-        parent_dir = f"IC/MHN/Data/mean_rho/N={N}/K={E//N}"
+        parent_dir = f"MHN/Data/mean_rho/N={N}/K={E//N}"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
 
@@ -143,16 +143,16 @@ def mean_rho(adress, P, p_criticial, net, E, m, h, lista_ps, T, wni, qni, sys_pe
                 file.seek(0)
                 file.write(f"ps_generated = {total_ps}\n")
                 file.close()
-                os.replace(adress, f"IC/MHN/Data/mean_rho/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_sysperp={sys_per_p}_p=({p0},{pf},{total_ps}).txt") # Atualiza a quantidade de sistemas no nome
+                os.replace(adress, f"MHN/Data/mean_rho/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_sysperp={sys_per_p}_p=({p0},{pf},{total_ps}).txt") # Atualiza a quantidade de sistemas no nome
                 raise KeyboardInterrupt
             file.write(str(autovals)+" \t "+str(F)+" \t "+str(F_std)+"\n")
         file.close()
         file = open(adress, 'r+')
         file.write("ps_generated = "+str(int(len_p)))
         file.close()
-        os.replace(adress, f"IC/MHN/Data/mean_rho/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_sysperp={sys_per_p}_p=({p0},{pf},{len_p}).txt")
+        os.replace(adress, f"MHN/Data/mean_rho/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_sysperp={sys_per_p}_p=({p0},{pf},{len_p}).txt")
     
-    adress = f"IC/MHN/Data/mean_rho/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_sysperp={sys_per_p}_p=({p0},{pf},{len_p}).txt"
+    adress = f"MHN/Data/mean_rho/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_sysperp={sys_per_p}_p=({p0},{pf},{len_p}).txt"
     file_read = open(adress, 'r')
     for j in range(qtde_param):
         file_read.readline()
@@ -187,41 +187,41 @@ def mean_plotter(lista_Ns, lista_Es, m, h, lista_ps, T, sys_per_p, mode_lst):
     
     if len(lista_Ns) == 1:
         N = lista_Ns[0]
-        folder_adress = f"IC/MHN/Figs/mean_rho/N={N}"
+        folder_adress = f"MHN/Figs/mean_rho/N={N}"
         
         if os.access(folder_adress, os.F_OK) == False:
             directory = f"N={N}"
-            parent_dir = f"IC/MHN/Figs/mean_rho"
+            parent_dir = f"MHN/Figs/mean_rho"
             path = os.path.join(parent_dir, directory)
             os.mkdir(path)
         
         folder_adress += f"/K={E//N}"
         if os.access(folder_adress, os.F_OK) == False:
             directory = f"K={E//N}"
-            parent_dir = f"IC/MHN/Figs/mean_rho/N={N}"
+            parent_dir = f"MHN/Figs/mean_rho/N={N}"
             path = os.path.join(parent_dir, directory)
             os.mkdir(path)
 
         folder_adress += f"/m={m}_h={h}"
         if os.access(folder_adress, os.F_OK) == False:
             directory = f"m={m}_h={h}"
-            parent_dir = f"IC/MHN/Figs/mean_rho/N={N}/K={E//N}"
+            parent_dir = f"MHN/Figs/mean_rho/N={N}/K={E//N}"
             path = os.path.join(parent_dir, directory)
             os.mkdir(path)
 
         fig.savefig(folder_adress + f"/n={net}_p=({lista_ps[0]},{lista_ps[-1]})_sysperp={sys_per_p}.png",dpi=400)
     else:
-        folder_adress = f"IC/MHN/Figs/mean_rho/K={E//N}"
+        folder_adress = f"MHN/Figs/mean_rho/K={E//N}"
         if os.access(folder_adress, os.F_OK) == False:
             directory = f"K={E//N}"
-            parent_dir = f"IC/MHN/Figs/mean_rho"
+            parent_dir = f"MHN/Figs/mean_rho"
             path = os.path.join(parent_dir, directory)
             os.mkdir(path)
 
         folder_adress += f"/m={m}_h={h}"
         if os.access(folder_adress, os.F_OK) == False:
             directory = f"m={m}_h={h}"
-            parent_dir = f"IC/MHN/Figs/mean_rho/K={E//N}"
+            parent_dir = f"MHN/Figs/mean_rho/K={E//N}"
             path = os.path.join(parent_dir, directory)
             os.mkdir(path)
             
@@ -250,24 +250,24 @@ def rho_plotter(N, E, m, h, lista_ps, sys_per_p, mode, T, wni, qni):
     ax.text(-10,0.2,'a',fontsize=20, weight='bold')
     fig.tight_layout()
 
-    folder_adress = f"IC/MHN/Figs/rho_t/N={N}"
+    folder_adress = f"MHN/Figs/rho_t/N={N}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"N={N}"
-        parent_dir = f"IC/MHN/Figs/rho_t"
+        parent_dir = f"MHN/Figs/rho_t"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
     
     folder_adress += f"/K={E//N}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"K={E//N}"
-        parent_dir = f"IC/MHN/Figs/rho_t/N={N}"
+        parent_dir = f"MHN/Figs/rho_t/N={N}"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
 
     folder_adress += f"/m={m}_h={h}"
     if os.access(folder_adress, os.F_OK) == False:
         directory = f"m={m}_h={h}"
-        parent_dir = f"IC/MHN/Figs/rho_t/N={N}/K={E//N}"
+        parent_dir = f"MHN/Figs/rho_t/N={N}/K={E//N}"
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
     fig.savefig(folder_adress + f"/n={net}_p=({lista_ps[0]},{lista_ps[-1]}).png")
