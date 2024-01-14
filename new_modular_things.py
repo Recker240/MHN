@@ -286,23 +286,23 @@ def mh_finder(selected_mh):
 st.set_page_config(layout="wide")
 st.write("Selecione os parâmetros desejados da rede (Obs.: Os valores de N=10125 são os mais robustos e com maior qualidade):")
 cols = st.columns(4)
-available_Ns = sorted(os.listdir("IC/MHN/Data/modular_dynamic/"))
+available_Ns = sorted(os.listdir("Data/modular_dynamic/"))
 available_Ns.sort(key=len)
 available_Ns.reverse()
 with cols[0]:
     selected_N = st.selectbox("Número de nós", available_Ns)
-available_Ks = sorted(os.listdir("IC/MHN/Data/modular_dynamic/"+selected_N+"/"))
+available_Ks = sorted(os.listdir("Data/modular_dynamic/"+selected_N+"/"))
 available_Ks.sort(key=len)
 available_Ks.reverse()
 with cols[1]:
     selected_K = st.selectbox("Grau médio", available_Ks)
-available_mh = os.listdir("IC/MHN/Data/modular_dynamic/"+selected_N+"/"+selected_K+"/")
+available_mh = os.listdir("Data/modular_dynamic/"+selected_N+"/"+selected_K+"/")
 available_mh.sort(key=len)
 available_mh.reverse()
 with cols[2]:
     selected_mh = st.selectbox("Padrão hierárquico", available_mh)
 
-folder_adress = "IC/MHN/Data/modular_dynamic/"+selected_N+"/"+selected_K+"/"+selected_mh
+folder_adress = "Data/modular_dynamic/"+selected_N+"/"+selected_K+"/"+selected_mh
 possible_data = os.listdir(folder_adress)
 nets = []
 for data in possible_data:
