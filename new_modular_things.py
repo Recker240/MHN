@@ -252,7 +252,7 @@ def plot_all_F_curves_str(N, E, m, h, r0, rf, len_r, T, mode, load):
             modularization_specific_deg.append(Delta_df[mask]["Modularização"])
 
         fig3 = ff.create_distplot(diffs_Deltas, [f"Grau hierárquico {i}" for i in range(1,h)], bin_size=0.2, rug_text=[modularization_specific_deg[i] for i in range(len(diffs_Deltas))])
-        fig3.add_vline(x=Delta[0], line_dash='dash', line_width=1, line=dict(color='White',))
+        fig3.add_vline(x=Delta[0], line_dash='dash', line_width=1, line=dict(color='Red',))
         fig3.update_layout(xaxis_title="Valores de faixa dinâmica (dB)", yaxis_title='Densidade')
 
         cols = st.columns(2)
