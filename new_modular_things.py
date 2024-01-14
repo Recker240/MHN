@@ -258,10 +258,10 @@ def plot_all_F_curves_str(N, E, m, h, r0, rf, len_r, T, mode, load):
         cols = st.columns(2)
         with cols[0]:
             st.write(Delta_df)
-        # with cols[1]:
+        with cols[1]:
             # response = st.checkbox("Exibir Curvas de resposta para cada módulo (Pode levar alguns minutos)")
             # if response:
-                # st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True)
         cols = st.columns(2)
         with cols[0]:
             st.write("Faixas dinâmicas de cada grau hierárquico")
