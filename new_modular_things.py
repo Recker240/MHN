@@ -197,100 +197,6 @@ def modular_file_manager(adress, P, E, m, h, net, p, r0, rf, len_r, T):
 
     return r, pmF, std_pmF
 
-def plot_all_F_curves_mpl(N, E, m, h, lista_ps, r0, rf, len_r, iterate_crit, T, mode):
-    fig, ax = plt.subplots(figsize=(12,8))
-    ax.set_xscale("log")
-    P, p_crit, net = Adjac_file_man(N, E, m, h, mode)
-    lamb_base = 1/p_crit
-    if iterate_crit:
-        lista_ps.append(p_crit)
-
-    colormaps = ["Purples", "Blues", "Greens", "Oranges", "Reds",
-                      "YlOrBr", "YlOrRd", "OrRd", "PuRd", "RdPu", "BuPu",
-                      "GnBu", "PuBu", "YlGnBu", "PuBuGn", "BuGn", "YlGn"]
-    Delta = np.zeros(((m+1)**(h-1), len(lista_ps) ))
-    sig_Delta = np.zeros(((m+1)**(h-1), len(lista_ps)))
-
-    for i, p in enumerate(tqdm(lista_ps,desc="Calculando as curvas de resposta...",colour="red")):
-        try:
-            adress = modular_file_opener(N, E, m, h, p, r0, rf, len_r, T, net)[0]
-        except IndexError:
-            adress = modular_file_opener(N, E, m, h, p, r0, rf, len_r, T, net)[0]
-        lamb = lamb_base*p
-        r, pmF, std_pmF = modular_file_manager(adress, P, E, m, h, net, p, r0, rf, len_r, T)
-        cmap = mpl.colormaps[colormaps[i]]
-
-        for j in range((m+1)**(h-1)):
-            F = pmF[:,j]
-            std_F = std_pmF[:,j]
-            if np.count_nonzero(F) != 0:
-                # ax.errorbar(r, F, std_F, linestyle="none", marker=".", color=my_cmap((j-((m+1)**(h-1)))/((m+1)**(h-1))), label=fr"$F_[{np.base_repr(j,m+1)}]$")
-                linha, = ax.plot(r, F, marker=".", color=cmap(1 - 0.7*j/((m+1)**(h-1))))
-                param = find_F_0(r, F, 1e-3)
-                ang, expo, lin = param
-                F_0 = 0 if lamb <= 1 else lin
-                F_max = 1/states 
-                F_tax_inf = F_0 + tax_inf*(F_max - F_0)
-                F_tax_sup = F_0 + tax_sup*(F_max - F_0)
-                # rmin, F_rmin, rmax, F_rmax, Delta[j,i], sig_Delta[j,i] = find_dyn_range(r, F, F_tax_inf, F_tax_sup)
-        linha.set_label(r"$\lambda = $"+ f"{round(lamb,4)}")
-    
-    # print(pd.DataFrame(Delta, columns=lista_ps, index=[np.base_repr(j,m+1) for j in range((m+1)**(h-1))]))
-    ax.set_xlabel(r"$r (ms^{-1})$")
-    ax.set_ylabel(r"$F (ms^{-1})$")
-    ax.legend(ncol=len(lista_ps))
-    fig.tight_layout()
-
-    fig_locator = f"Figs/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/"
-    folder_existance_check(fig_locator)
-    fig.savefig(fig_locator+f"all_modular_response_n={net}.png")
-    return fig
-
-def plot_all_dynamic_curves_mpl(N, E, m, h, lista_ps, r0, rf, len_r, T, mode):
-    fig, ax = plt.subplots(figsize=(8,4))
-    P, p_crit, net = Adjac_file_man(N, E, m, h, mode)
-    lamb_base = 1/p_crit
-    lista_ps.append(p_crit)
-
-    Delta = np.zeros(((m+1)**(h-1), len(lista_ps)))
-    sig_Delta = np.zeros(((m+1)**(h-1), len(lista_ps)))
-    colormaps = ["Purples", "Blues", "Greens", "Oranges", "Reds",
-                      "YlOrBr", "YlOrRd", "OrRd", "PuRd", "RdPu", "BuPu",
-                      "GnBu", "PuBu", "YlGnBu", "PuBuGn", "BuGn", "YlGn", "viridis", "plasma", "inferno", "magma", "cividis","ocean", "gist_earth", "terrain", "gnuplot", "gnuplot2", "CMRmap","cubehelix", "brg", "rainbow", "jet",
-                      "turbo"]
-
-    for i, p in enumerate(tqdm(lista_ps, desc=f"Calculando curvas de resposta...")):
-        try:
-            adress = modular_file_opener(N, E, m, h, p, r0, rf, len_r, T, net)[0]
-        except IndexError:
-            adress = modular_file_opener(N, E, m, h, p, r0, rf, len_r, T, net)[0]
-        lamb = lamb_base*p
-        r, pmF, std_pmF = modular_file_manager(adress, P, E, m, h, net, p, r0, rf, len_r, T)
-
-        for j in range((m+1)**(h-1)):
-            cmap = mpl.colormaps[colormaps[j]]
-            F = pmF[:,j]
-            std_F = std_pmF[:,j]
-            if np.count_nonzero(F) != 0:
-                param = find_F_0(r, F, 1e-3)
-                ang, expo, lin = param
-                F_0 = 0 if lamb <= 1 else lin
-                F_max = 1/states 
-                F_tax_inf = F_0 + tax_inf*(F_max - F_0)
-                F_tax_sup = F_0 + tax_sup*(F_max - F_0)
-                rmin, F_rmin, rmax, F_rmax, Delta[j,i], sig_Delta[j,i] = find_dyn_range(r, F, F_tax_inf, F_tax_sup)
-                pt, = ax.plot(lamb, Delta[j,i], ".", color=cmap(1 - 0.7*j/((m+1)**(h-1))))
-                pt.set_label(to_base_m1(j,m+1)) if i==0 else ...
-    ax.set_xlabel(r"$\lambda$")
-    ax.set_ylabel(r"$\Delta (dB)$")
-    ax.legend(ncol=h+1)
-    fig.tight_layout()
-
-    fig_locator = f"Figs/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/"
-    folder_existance_check(fig_locator)
-    fig.savefig(fig_locator+f"all_modular_dynamic_n={net}.png")
-    return fig
-
 def plot_all_F_curves_str(N, E, m, h, r0, rf, len_r, T, mode, load):
     P, p_crit, net = Adjac_file_man(N, E, m, h, mode)
     print(f"Cálculos para rede n={net}")
@@ -320,34 +226,49 @@ def plot_all_F_curves_str(N, E, m, h, r0, rf, len_r, T, mode, load):
 
     indexes_enuples = [str(to_base_m1(j,m+1)) for j in range(num_modules)]
     degrees = [np.count_nonzero(to_base_m1(j,m+1)) for j in range(num_modules)]
-    Delta_df = pd.DataFrame(np.matrix.transpose(np.array([Delta, sig_Delta, indexes_enuples, degrees])), columns=["Delta", "Erro", "Módulo", "Grau Hierárquico"])
+    difference = [Delta[j] - Delta[0] for j in range(len(Delta))]
+    Delta_df = pd.DataFrame(np.matrix.transpose(np.array([Delta, sig_Delta, indexes_enuples, degrees, difference])), columns=["Delta", "Erro", "Modularização", "Grau Hierárquico", "Diferença"])
     Delta_df["Delta"] = pd.to_numeric(Delta_df["Delta"])
     Delta_df["Erro"] = pd.to_numeric(Delta_df["Erro"])
     Delta_df["Grau Hierárquico"] = pd.to_numeric(Delta_df["Grau Hierárquico"])
+    Delta_df["Diferença"] = pd.to_numeric(Delta_df["Diferença"])
+    Delta_df = Delta_df[Delta_df["Delta"] > 1]
 
     if load:
         fig.update_xaxes(type="log",row=1,col=1)
         fig.update_layout(xaxis_title="r(kHz)",yaxis_title="F (kHz)")
-        fig2 = go.Figure(data=go.Scatter(mode="markers", x=Delta_df["Grau Hierárquico"], y=Delta_df["Delta"], text=Delta_df["Módulo"]),layout_yaxis_range=[24.5,27.5])
-        fig3 = make_subplots()
+        fig2 = px.scatter(Delta_df, x="Grau Hierárquico", y="Delta", color="Grau Hierárquico", hover_data="Modularização")
+        fig2.update_yaxes(range=[0.99*min(Delta_df["Delta"]),1.01*max(Delta_df["Delta"])])
+        fig2.update_xaxes(showgrid=True)
+        fig2.update_layout(hovermode="y")
+        diffs_Deltas = []
+        modularization_specific_deg = []
         for i in range(1,h):
-            mask = (Delta_df["Grau Hierárquico"]==i) & (Delta_df["Delta"] > 1)
+            mask = (Delta_df["Grau Hierárquico"]==i)
             masked_Deltas = np.array(Delta_df[mask]["Delta"])
-            len_masked_Deltas = len(masked_Deltas)
-            diffs_hist, diffs_bins = np.histogram(masked_Deltas - Delta[0], density=True, bins=len_masked_Deltas)
-            fig3.add_trace(go.Scatter(mode="markers", x=diffs_bins, y=diffs_hist, name=f"grau {i}", text=f"Delta = {diffs_bins}"))
+            diffs_Deltas.append(masked_Deltas)
+            modularization_specific_deg.append(Delta_df[mask]["Modularização"])
 
-        st.write(f"Curvas de resposta e de faixa dinâmica para N={N}, K={E//N}, m={m} e h={h}:")
-        st.write(Delta_df)
-        # st.write("Curvas de resposta para cada módulo")
-        # st.plotly_chart(fig, use_container_width=True)
-        st.write("Faixas dinâmicas de cada grau hierárquico")
-        st.plotly_chart(fig2, use_container_width=True)
-        st.latex(r"Diferença de cada \Delta para o valor da rede toda")
-        st.plotly_chart(fig3, use_container_width=True)
+        fig3 = ff.create_distplot(diffs_Deltas, [f"Grau hierárquico {i}" for i in range(1,h)], bin_size=0.2, rug_text=[modularization_specific_deg[i] for i in range(len(diffs_Deltas))])
+        fig3.add_vline(x=Delta[0], line_dash='dash', line_width=1, line=dict(color='White',))
+        fig3.update_layout(xaxis_title="Valores de faixa dinâmica (dB)", yaxis_title='Densidade')
+
+        cols = st.columns(2)
+        with cols[0]:
+            st.write(Delta_df)
+        with cols[1]:
+            response = st.checkbox("Exibir Curvas de resposta para cada módulo (Pode levar alguns minutos)")
+            if response:
+                st.plotly_chart(fig, use_container_width=True)
+        cols = st.columns(2)
+        with cols[0]:
+            st.write("Faixas dinâmicas de cada grau hierárquico")
+            st.plotly_chart(fig2, use_container_width=True)
+        with cols[1]:
+            st.write("Histograma normalizado dos valores de faixa dinâmica. A linha tracejada representa o valor da rede toda.")
+            st.plotly_chart(fig3, use_container_width=True)
     return fig
-
-        
+   
 def mh_finder(selected_mh):
     for l in range(len(selected_mh)-1,-1,-1):
         if selected_mh[l] == '=':
@@ -363,30 +284,46 @@ def mh_finder(selected_mh):
                     return int(m), int(h)
 
 st.set_page_config(layout="wide")
-st.write("Selecione os parâmetros desejados da rede:")
-cols = st.columns(3)
-available_Ns = sorted(os.listdir("Data/modular_dynamic/"))
+st.write("Selecione os parâmetros desejados da rede (Obs.: Os valores de N=10125 são os mais robustos e com maior qualidade):")
+cols = st.columns(4)
+available_Ns = sorted(os.listdir("IC/MHN/Data/modular_dynamic/"))
+available_Ns.sort(key=len)
+available_Ns.reverse()
 with cols[0]:
     selected_N = st.selectbox("Número de nós", available_Ns)
-available_Ks = sorted(os.listdir("Data/modular_dynamic/"+selected_N+"/"))
+available_Ks = sorted(os.listdir("IC/MHN/Data/modular_dynamic/"+selected_N+"/"))
+available_Ks.sort(key=len)
+available_Ks.reverse()
 with cols[1]:
     selected_K = st.selectbox("Grau médio", available_Ks)
-available_mh = os.listdir("Data/modular_dynamic/"+selected_N+"/"+selected_K+"/")
+available_mh = os.listdir("IC/MHN/Data/modular_dynamic/"+selected_N+"/"+selected_K+"/")
+available_mh.sort(key=len)
+available_mh.reverse()
 with cols[2]:
     selected_mh = st.selectbox("Padrão hierárquico", available_mh)
 
-folder_adress = "Data/modular_dynamic/"+selected_N+"/"+selected_K+"/"+selected_mh
-net = os.listdir(folder_adress)[0][2]
+folder_adress = "IC/MHN/Data/modular_dynamic/"+selected_N+"/"+selected_K+"/"+selected_mh
+possible_data = os.listdir(folder_adress)
+nets = []
+for data in possible_data:
+    for index, letra in enumerate(data):
+        if letra == '_':
+            nets.append(data[:index])
+            break
+
+with cols[3]:
+    selected_n = st.selectbox("Selecione uma matriz de adjacências específica:", nets)
 
 N = int(selected_N[2:])
 E = int(selected_K[2:])*N
 m, h = mh_finder(selected_mh)
+n = selected_n[2:]
 
 st.write(f"Nesse caso, há módulos de tamanhos {[N/(m**(h-k)) for k in range(1,h)]}.")
+
 # Globals
 wni, qni = N, N//10
 systems, states = 30, 5
 tax_inf, tax_sup = 0.1, 0.9
 T = 1000
-fig = plot_all_F_curves_str(N, E, m, h, 1e-5, 1e+2, 50, T, 'r'+str(net), True)
-
+fig = plot_all_F_curves_str(N, E, m, h, 1e-5, 1e+2, 50, T, 'r'+str(n), True)
