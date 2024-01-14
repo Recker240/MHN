@@ -9,6 +9,8 @@ import matplotlib.colors as mcolors
 
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import plotly.express as px
+import plotly.figure_factory as ff
 import streamlit as st
 
 from imports import *
