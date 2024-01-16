@@ -143,15 +143,7 @@ def plot_all_F_curves_str(N, E, m, h, r0, rf, len_r, T, mode, load):
         fig3.add_vline(x=Delta[0], line_dash='dash', line_width=1, line=dict(color='Red',))
         fig3.update_layout(xaxis_title="Valores de faixa dinâmica (dB)", yaxis_title='Densidade')
 
-        st.write("Abaixo, você verá dois gráficos e uma tabela. Os conceitos importantes aqui são os de módulo e grau hierárquico.
-        O módulo é uma ênupla de h-1 elementos (sendo h a quantidade total de hierarquias presentes na rede) que explicita o módulo
-        onde um nó está. Dessa maneira, todo neurônio que pertencer ao módulo representado pela ênupla [ 2 7 12 ], por exemplo, 
-        também pertence às herarquias acima, denominadas colocando um zero da direita para a esquerda. Logo, entende-se que tal 
-        neurônio também está nos módulos [ 2 7 0 ], [ 2 0 0 ] e [ 0 0 0 ] (assim como todos os neurônios, no caso desta última.
-        Note também que essa ênupla pode ser entendida como um número em base m+1, propriedade usada nos cáculos). O grau hierárquico
-        é a quantidade de entradas não nulas da ênupla, que serve apenas para distinguir a qual hierarquia o módulo se refere. É um
-        inteiro de 0 a h-1. Por exemplo, o módulo [ 2 7 12 ] tem grau = 3, enquanto [ 2 7 0 ] apresenta grau = 2, [ 2 0 0 ] tem grau = 1
-        e [ 0 0 0 ] é o único com grau = 0.")
+        st.write("Abaixo, você verá dois gráficos e uma tabela. Os conceitos importantes aqui são os de módulo e grau hierárquico. O módulo é uma ênupla de h-1 elementos (sendo h a quantidade total de hierarquias presentes na rede) que explicita o módulo onde um nó está. Dessa maneira, todo neurônio que pertencer ao módulo representado pela ênupla [ 2 7 12 ], por exemplo, também pertence às herarquias acima, denominadas colocando um zero da direita para a esquerda. Logo, entende-se que tal neurônio também está nos módulos [ 2 7 0 ], [ 2 0 0 ] e [ 0 0 0 ] (assim como todos os neurônios, no caso desta última. Note também que essa ênupla pode ser entendida como um número em base m+1, propriedade usada nos cáculos). O grau hierárquico é a quantidade de entradas não nulas da ênupla, que serve apenas para distinguir a qual hierarquia o módulo se refere. É um inteiro de 0 a h-1. Por exemplo, o módulo [ 2 7 12 ] tem grau = 3, enquanto [ 2 7 0 ] apresenta grau = 2, [ 2 0 0 ] tem grau = 1 e [ 0 0 0 ] é o único com grau = 0.")
         cols = st.columns(2)
         with cols[0]:
             st.write(Delta_df)
