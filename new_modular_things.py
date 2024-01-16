@@ -48,83 +48,7 @@ def neuron_normalization(N, m, h, neuron):
     for i, el in enumerate(reset_coords):
         reset_coords[i] = int(el) + 1
     return reset_coords
-
-@jit(nopython=True)
-def connection_increaser(N, m, h, s, activated_node):
-    s_new = np.copy(s)
-    normalized_coords = neuron_normalization(N, m, h, activated_node)
-    aux_normalixed_coords = np.copy(normalized_coords)
-    for l in range(len(aux_normalixed_coords)+1):
-        to_new_base = to_base_10(aux_normalixed_coords, m+1)
-        s_new[to_new_base] += 1
-        if np.count_nonzero(aux_normalixed_coords) != 0:
-            aux_normalixed_coords[l] = 0
-    return s_new
-
-@jit(nopython=True)
-def modular_initial_position(N, m, h):
-    x_inic = np.zeros(N)
-    s_inic = np.zeros((m+1)**(h-1))
-    raffled_nodes = np.random.randint(0, wni, qni)
-    for i in raffled_nodes:
-        x_inic[i] = 1
-        s_inic = connection_increaser(N, m, h, s_inic, i)
-    return x_inic, s_inic
-
-@jit(nopython=True)
-def modular_iterator(P, m, h, x, states, p, r):
-    N, k = P.shape
-    x_new = np.copy(x)
-    s = np.zeros((m+1)**(h-1))
-    s_new = np.copy(s)
-
-    for i in range(N):
-        if x[i] != 0:
-            x_new[i] = (x[i]+1)%states
-        else:
-            stim_test = np.random.uniform(0,1)
-            if stim_test <= 1-np.exp(-r*1):
-                x_new[i] = 1
-                s_new += connection_increaser(N, m, h, s, i)
-            else:
-                for j in range(k):
-                    connected_node = int(P[i,j])
-                    if connected_node != -1:
-                        u = np.random.uniform(0,1)
-                        if x[connected_node] == 1 and u<p:
-                            x_new[i] = 1
-                            s_new += connection_increaser(N, m, h, s, i)
-                            break
-                    else:
-                        break
-    return x_new, s_new
-
-@jit(nopython=True)
-def modular_time_iterator(P, m, h, p, states, T, r):
-    N = P.shape[0]
-    rho = np.zeros((T, (m+1)**(h-1)))
-    x, s = modular_initial_position(N, m, h)
-
-    for i in range(T):
-        for j in range(len(s)):
-            hier = np.count_nonzero(to_base_m1(j,m+1)) # RECHECK THIS, COUNT_NONZERO BY LEN
-            nim = neurons_in_a_module(N, m, hier)
-            rho[i,j] = s[j]/nim
-
-        x, s = modular_iterator(P, m, h, x, states, p, r)
-    return rho
-
-@jit(nopython=True)
-def modular_F_dyn(P, m, h, p, systems, states, T, r):
-    Fs_per_system = np.zeros((systems, (m+1)**(h-1)))
-    for j in range(systems):
-        rho = modular_time_iterator(P, m, h, p, states, T, r)
-        rho_not_transient = rho[int(0.3*T):,:]
-        Fs_per_system[j,:] = matrix_mean(rho_not_transient)
-    Fs_per_module = matrix_mean(Fs_per_system)
-    stds_Fs_per_module = matrix_std(Fs_per_system, Fs_per_module)
-    return Fs_per_module, stds_Fs_per_module
-
+   
 def modular_file_opener(N,E,m,h,p,r0,rf,len_r,T,net):
     folder_adress = f"Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/"
     folder_existance_check(folder_adress)
@@ -148,42 +72,10 @@ def modular_file_opener(N,E,m,h,p,r0,rf,len_r,T,net):
         adresses = [f"Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt"]
     return adresses
 
-def modular_file_manager(adress, P, E, m, h, net, p, r0, rf, len_r, T):
+def modular_file_manager(P, E, m, h, net, p, r0, rf, len_r, T):
     lista_rs = 10**np.linspace(np.log10(r0),np.log10(rf),len_r,endpoint=True)
-    file = open(adress, "r")
-    rs_generated = int((sum(1 for line in file) - 1)/3)
-    file.close()
     N, k = P.shape
-    
-    if rs_generated < len_r:
-        file_app = open(adress, "a")
-        rs_faltam = lista_rs[(rs_generated):]
-
-        for r in tqdm(rs_faltam, desc=f"Calculando F para p={p}", colour="yellow", leave=False,miniters=1):
-            try:
-                pmF, std_pmF = modular_F_dyn(P, m, h, p, systems, states, T, r)
-                file_app.write(str(r)+" \n\t")
-                file_app.writelines([str(oi)+" \t" for oi in pmF])
-                file_app.write("\n\t")
-                file_app.writelines([str(oi)+" \t" for oi in std_pmF])
-                file_app.write("\n")
-            except KeyboardInterrupt:
-                file_app.close()
-                file_correct = open(adress, "r+")
-                file_correct.seek(0)
-                total_rs = (sum(1 for line in file_correct) - 1)/3
-                print(total_rs)
-                file_correct.seek(0)
-                file_correct.write("rs_generated = "+str(int(len_r)))
-                file_correct.close()
-                os.replace(adress, f"Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{total_rs}).txt")
-                exit()
-        file_app.close()
-        file_correct = open(adress, "r+")
-        file_correct.write("rs_generated = "+str(int(len_r)))
-        file_correct.close()
-        os.replace(adress, f"Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt")
-    
+   
     adress = f"Data/modular_dynamic/N={N}/K={E//N}/m={m}_h={h}/n={net}_T={T}_p={p}_r=({r0},{rf},{len_r}).txt"
     file_read = open(adress, "r")
     
@@ -207,12 +99,8 @@ def plot_all_F_curves_str(N, E, m, h, r0, rf, len_r, T, mode, load):
     Delta = np.zeros(num_modules)
     sig_Delta = np.zeros(num_modules)
     fig = make_subplots(cols=1,rows=1)
-    try:
-        adress = modular_file_opener(N, E, m, h, p_crit, r0, rf, len_r, T, net)[0]
-    except IndexError:
-        adress = modular_file_opener(N, E, m, h, p_crit, r0, rf, len_r, T, net)[0]
     
-    r, pmF, std_pmF = modular_file_manager(adress, P, E, m, h, net, p_crit, r0, rf, len_r, T)
+    r, pmF, std_pmF = modular_file_manager(P, E, m, h, net, p_crit, r0, rf, len_r, T)
 
     for j in range(num_modules):
         F = pmF[:,j]
