@@ -129,7 +129,7 @@ def plot_all_F_curves_str(N, E, m, h, r0, rf, len_r, T, mode, load):
         fig.update_layout(xaxis_title="r(kHz)",yaxis_title="F (kHz)")
         fig2, ax2 = plt.subplots(subplot_kw={'projection':'3d'})
         
-        ax2.plot(Delta_df["Grau Hierárquico"], np.trim_zeros(Delta_df["Módulo"])[:,-1], Delta_df["Delta"])
+        ax2.plot(Delta_df["Grau Hierárquico"], np.trim_zeros((Delta_df["Módulo"])[:,-1]), Delta_df["Delta"])
         
         #fig2 = px.scatter(Delta_df, x="Grau Hierárquico", y="Delta", color="Grau Hierárquico", hover_data="Grau Hierárquico")
         #fig2.update_yaxes(range=[0.99*min(Delta_df["Delta"]),1.01*max(Delta_df["Delta"])])
