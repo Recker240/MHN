@@ -129,7 +129,7 @@ def plot_all_F_curves_str(N, E, m, h, r0, rf, len_r, T, mode, load):
         fig.update_layout(xaxis_title="r(kHz)",yaxis_title="F (kHz)")
         fig2, ax2 = plt.subplots(subplot_kw={'projection':'3d'})
 
-        for g, modulo, d in zip(Delta_df["Grau Hierárquico"], Delta_df["Módulo"], Delta_df["Delta"]):
+        for g, modulo, d in zip(Delta_df["Grau Hierárquico"], Delta_df["Modularização"], Delta_df["Delta"]):
             last_module = modulo[np.count_nonzero(modulo)]
             ax2.plot(g, last_module, d)
         
