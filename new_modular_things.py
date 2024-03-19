@@ -127,10 +127,14 @@ def plot_all_F_curves_str(N, E, m, h, r0, rf, len_r, T, mode, load):
     if load:
         fig.update_xaxes(type="log",row=1,col=1)
         fig.update_layout(xaxis_title="r(kHz)",yaxis_title="F (kHz)")
-        fig2 = px.scatter(Delta_df, x="Grau Hierárquico", y="Delta", color="Grau Hierárquico", hover_data="Grau Hierárquico")
-        fig2.update_yaxes(range=[0.99*min(Delta_df["Delta"]),1.01*max(Delta_df["Delta"])])
-        fig2.update_xaxes(showgrid=True)
-        fig2.update_layout(hovermode="y")
+        fig2, ax2 = plt.subplots(subplot_kw={'projection':'3d'})
+        
+        ax2.plot(Delta_df["Grau Hierárquico"], np.trim_zeros(Delta_df["Módulo"])[:,-1], Delta_df["Delta"])
+        
+        #fig2 = px.scatter(Delta_df, x="Grau Hierárquico", y="Delta", color="Grau Hierárquico", hover_data="Grau Hierárquico")
+        #fig2.update_yaxes(range=[0.99*min(Delta_df["Delta"]),1.01*max(Delta_df["Delta"])])
+        #fig2.update_xaxes(showgrid=True)
+        #fig2.update_layout(hovermode="y")
         diffs_Deltas = []
         modularization_specific_deg = []
         for i in range(1,h):
@@ -154,7 +158,8 @@ def plot_all_F_curves_str(N, E, m, h, r0, rf, len_r, T, mode, load):
         cols = st.columns(2)
         with cols[0]:
             st.write("Faixas dinâmicas de cada grau hierárquico")
-            st.plotly_chart(fig2, use_container_width=True)
+            #st.plotly_chart(fig2, use_container_width=True)
+            st.pyplot(fig2, use_container_width=True)
         with cols[1]:
             st.write("Histograma normalizado dos valores de faixa dinâmica. A linha tracejada representa o valor da rede toda.")
             st.plotly_chart(fig3, use_container_width=True)
